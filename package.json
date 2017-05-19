@@ -1,0 +1,43 @@
+{
+  "name": "unomp-multi-hashing",
+  "version": "1.0.0",
+  "main": "multihashing",
+  "author": {
+    "name": "zone117x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DeffM/node-multi-hashing.git"
+  },
+  "dependencies": {
+    "bindings": "*"
+    "nan": "1.9.0"
+  },
+  "keywords": [
+    "scrypt",
+    "scryptjane",
+    "script-n",
+    "x11",
+    "quark",
+    "keccak_hash",
+    "skein",
+    "bcrypt",
+    "keccak",
+    "blake",
+    "shavite",
+    "fugue",
+    "yescrypt",
+    "sha1",
+    "neoscrypt",
+    "decrypt"
+  ],
+    "scripts": {
+    "install": "node-gyp rebuild"
+  },
+  "gypfile": true,
+  "readmeFilename": "README.md",
+  "description": "node-multi-hashing",
+  "bugs": {
+    "url": "https://github.com/DeffM/node-multi-hashing/issues"
+  }
+}
