@@ -1,5 +1,5 @@
 {
-  "name": "unomp-multi-hashing",
+  "name": "node-multi-hashing",
   "version": "1.0.0",
   "main": "multihashing",
   "author": {
@@ -7,7 +7,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/DeffM/node-multi-hashing.git"
+    "url": "https://github.com/mrzeta/node-multi-hashing.git"
   },
   "dependencies": {
     "bindings": "*",
@@ -38,6 +38,6 @@
   "readmeFilename": "README.md",
   "description": "node-multi-hashing",
   "bugs": {
-    "url": "https://github.com/DeffM/node-multi-hashing/issues"
+    "url": "https://github.com/mrzeta/node-multi-hashing/issues"
   }
 }
