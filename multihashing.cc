@@ -594,8 +594,8 @@ NAN_METHOD(lyra2z330) {
     //return scope.Close(buff->handle_);
 }
 
-Handle<Value> lyra2z16m330(const Arguments& args) {
-    HandleScope scope;
+NAN_METHOD(lyra2z16m330) {
+    NanScope();
 
     if (args.Length() < 1)
         return THROW_ERROR_EXCEPTION("You must provide one argument.");
