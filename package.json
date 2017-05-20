@@ -1,0 +1,33 @@
+{
+  "name": "multi-hashing",
+  "version": "1.0.0",
+  "main": "multihashing",
+  "author": {
+    "name": "mrzeta"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mrzeta/node-multi-hashing.git"
+  },
+  "dependencies": {
+    "bindings": "*",
+    "nan": "1.9.0"
+  },
+  "keywords": [
+    "scrypt",
+    "scryptjane",
+    "script-n",
+    "x11",
+    "quark",
+    "keccak_hash",
+    "skein",
+    "bcrypt",
+    "keccak",
+    "blake",
+    "shavite",
+    "fugue",
+    "sha1",
+    "lyra2z330",
+    "lyra2z16m330"
+  ]
+}
