@@ -18,6 +18,7 @@ extern "C" {
     #include "qubit.h"
     #include "hefty1.h"
     #include "shavite3.h"
+    #include "cryptonight.h"
     #include "x13.h"
     #include "nist5.h"
     #include "sha1.h"
@@ -412,7 +413,41 @@ NAN_METHOD(shavite3) {
         NanNewBufferHandle(output, 32)
     );
 }
+NAN_METHOD(cryptonight) {
+    NanScope();
 
+    bool fast = false;
+
+    if (args.Length() < 1)
+        return THROW_ERROR_EXCEPTION("You must provide one argument.");
+
+    if (args.Length() >= 2) {
+        if(!args[1]->IsBoolean())
+            return THROW_ERROR_EXCEPTION("Argument 2 should be a boolean");
+        fast = args[1]->ToBoolean()->BooleanValue();
+    }
+
+    Local<Object> target = args[0]->ToObject();
+
+    if(!Buffer::HasInstance(target))
+        return THROW_ERROR_EXCEPTION("Argument should be a buffer object.");
+
+    char * input = Buffer::Data(target);
+    char output[32];
+
+    uint32_t input_len = Buffer::Length(target);
+
+    if(fast)
+        cryptonight_fast_hash(input, output, input_len);
+    else
+        cryptonight_hash(input, output, input_len);
+
+    NanReturnValue(
+        NanNewBufferHandle(output, 32)
+    );
+    // Buffer* buff = Buffer::New(output, 32);
+    // return scope.Close(buff->handle_);
+}
 NAN_METHOD(x13) {
     NanScope();
 
@@ -634,6 +669,7 @@ void init(Handle<Object> exports) {
     exports->Set(NanNew<String>("qubit"), NanNew<FunctionTemplate>(qubit)->GetFunction());
     exports->Set(NanNew<String>("hefty1"), NanNew<FunctionTemplate>(hefty1)->GetFunction());
     exports->Set(NanNew<String>("shavite3"), NanNew<FunctionTemplate>(shavite3)->GetFunction());
+    exports->Set(NanNew<String>("cryptonight"), NanNew<FunctionTemplate>(cryptonight)->GetFunction());
     exports->Set(NanNew<String>("x13"), NanNew<FunctionTemplate>(x13)->GetFunction());
     exports->Set(NanNew<String>("nist5"), NanNew<FunctionTemplate>(nist5)->GetFunction());
     exports->Set(NanNew<String>("sha1"), NanNew<FunctionTemplate>(sha1)->GetFunction());

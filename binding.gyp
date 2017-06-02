@@ -17,6 +17,7 @@
                 "qubit.c",
                 "hefty1.c",
                 "shavite3.c",
+                "cryptonight.c",
                 "x13.c",
                 "nist5.c",
                 "sha1.c",
