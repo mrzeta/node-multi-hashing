@@ -29,6 +29,7 @@ extern "C" {
     #include "Lyra2REV2.h"
     #include "lyra2z330.h"
     #include "lyra2z16m330.h"
+    #include "c11.h"
 }
 
 #define THROW_ERROR_EXCEPTION(x) NanThrowError(x)
@@ -653,6 +654,30 @@ NAN_METHOD(lyra2z16m330) {
     // Buffer* buff = Buffer::New(output, 32);
     // return scope.Close(buff->handle_);
 }
+
+NAN_METHOD(c11) {
+    NanScope();
+
+    if (args.Length() < 1)
+        return THROW_ERROR_EXCEPTION("You must provide one argument.");
+
+    Local<Object> target = args[0]->ToObject();
+
+    if(!Buffer::HasInstance(target))
+        return THROW_ERROR_EXCEPTION("Argument should be a buffer object.");
+
+    char * input = Buffer::Data(target);
+    char output[32];
+
+    uint32_t input_len = Buffer::Length(target);
+
+    c11_hash(input, output, input_len);
+
+    NanReturnValue(
+        NanNewBufferHandle(output, 32)
+    );
+}
+
 void init(Handle<Object> exports) {
     exports->Set(NanNew<String>("quark"), NanNew<FunctionTemplate>(quark)->GetFunction());
     exports->Set(NanNew<String>("x11"), NanNew<FunctionTemplate>(x11)->GetFunction());
@@ -679,6 +704,7 @@ void init(Handle<Object> exports) {
     exports->Set(NanNew<String>("lyra2rev2"), NanNew<FunctionTemplate>(lyra2rev2)->GetFunction());
     exports->Set(NanNew<String>("lyra2z330"), NanNew<FunctionTemplate>(lyra2z330)->GetFunction());
     exports->Set(NanNew<String>("lyra2z16m330"), NanNew<FunctionTemplate>(lyra2z16m330)->GetFunction());
+    exports->Set(NanNew<String>("c11"), NanNew<FunctionTemplate>(c11)->GetFunction());
 }
 
 NODE_MODULE(multihashing, init)
