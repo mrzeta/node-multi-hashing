@@ -75,7 +75,7 @@ void lyra2re_hash(const char* input, char* output)
 }
 void lyra2re2_hash(const char* state, char* input)
 {
-    uint32_t _ALIGN(128) hashA[8], hashB[8];
+    uint32_t hashA[8], hashB[8];
 
     sph_blake256_context     ctx_blake;
     sph_keccak256_context    ctx_keccak;
