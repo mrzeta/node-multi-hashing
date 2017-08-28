@@ -73,7 +73,7 @@ void lyra2re_hash(const char* input, char* output)
 
 	memcpy(output, hashA, 32);
 }
-void lyra2re2_hash(void *state, const void *input)
+void lyra2re2_hash(const char* state, char* input)
 {
     uint32_t _ALIGN(128) hashA[8], hashB[8];
 
