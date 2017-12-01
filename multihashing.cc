@@ -606,6 +606,28 @@ NAN_METHOD(lyra2re2) {
     );
 }
 
+
+NAN_METHOD(lyra2reg) {
+    NanScope();
+
+    if (args.Length() < 1)
+        return THROW_ERROR_EXCEPTION("You must provide one argument.");
+
+    Local<Object> target = args[0]->ToObject();
+
+    if(!Buffer::HasInstance(target))
+        return THROW_ERROR_EXCEPTION("Argument should be a buffer object.");
+
+    char * input = Buffer::Data(target);
+    char output[32];
+
+    lyra2reg_hash(input, output);
+
+    NanReturnValue(
+        NanNewBufferHandle(output, 32)
+    );
+}
+
 NAN_METHOD(lyra2rev2) {
     NanScope();
 
@@ -700,6 +722,27 @@ NAN_METHOD(c11) {
     );
 }
 
+NAN_METHOD(lyra2h) {
+    NanScope();
+
+    if (args.Length() < 1)
+        return THROW_ERROR_EXCEPTION("You must provide one argument.");
+
+    Local<Object> target = args[0]->ToObject();
+
+    if(!Buffer::HasInstance(target))
+        return THROW_ERROR_EXCEPTION("Argument should be a buffer object.");
+
+    char * input = Buffer::Data(target);
+    char output[32];
+
+    lyra2h_hash(input, output);
+
+    NanReturnValue(
+        NanNewBufferHandle(output, 32)
+    );
+}
+
 void init(Handle<Object> exports) {
     exports->Set(NanNew<String>("quark"), NanNew<FunctionTemplate>(quark)->GetFunction());
     exports->Set(NanNew<String>("x11"), NanNew<FunctionTemplate>(x11)->GetFunction());
@@ -724,6 +767,7 @@ void init(Handle<Object> exports) {
     exports->Set(NanNew<String>("fresh"), NanNew<FunctionTemplate>(fresh)->GetFunction());
     exports->Set(NanNew<String>("lyra2re"), NanNew<FunctionTemplate>(lyra2re)->GetFunction());
     exports->Set(NanNew<String>("lyra2re2"), NanNew<FunctionTemplate>(lyra2re2)->GetFunction());
+    exports->Set(NanNew<String>("lyra2reg"), NanNew<FunctionTemplate>(lyra2reg)->GetFunction());
     exports->Set(NanNew<String>("lyra2rev2"), NanNew<FunctionTemplate>(lyra2rev2)->GetFunction());
     exports->Set(NanNew<String>("lyra2z330"), NanNew<FunctionTemplate>(lyra2z330)->GetFunction());
     exports->Set(NanNew<String>("lyra2z16m330"), NanNew<FunctionTemplate>(lyra2z16m330)->GetFunction());
