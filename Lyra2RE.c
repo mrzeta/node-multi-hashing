@@ -158,7 +158,7 @@ void lyra2h_hash(const char* input, char* output)
     sph_blake256 (&ctx_blake, input, 80);
     sph_blake256_close (&ctx_blake, hashA);
 
-    LYRA2((void*)hashA, 32, (const void*)hashB, 32, (const void*)hashB, 32, 16, 16, 16);
+    LYRA2((void*)hashB, 32, (const void*)hashA, 32, (const void*)hashA, 32, 16, 16, 16);
 
-    memcpy(output, hashA, 32);
+    memcpy(output, hashB, 32);
 }
