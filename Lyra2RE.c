@@ -130,7 +130,15 @@ void lyra2reg_hash(const char* input, char* output)
     sph_cubehash256(&ctx_cubehash, hashB, 32);
     sph_cubehash256_close(&ctx_cubehash, hashA);
 
-    LYRA2(hashB, 32, hashA, 32, hashA, 32, 1, 32, 32);
+    sph_keccak256_init(&ctx_keccak);
+    sph_keccak256(&ctx_keccak, hashA, 32);
+    sph_keccak256_close(&ctx_keccak, hashB);
+
+    sph_cubehash256_init(&ctx_cubehash);
+    sph_cubehash256(&ctx_cubehash, hashB, 32);
+    sph_cubehash256_close(&ctx_cubehash, hashA);
+
+    LYRA2(hashB, 32, hashA, 32, hashA, 32, 1, 4, 4);
 
     sph_skein256_init(&ctx_skein);
     sph_skein256(&ctx_skein, hashB, 32);
