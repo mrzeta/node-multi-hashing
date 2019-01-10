@@ -23,6 +23,7 @@ extern "C" {
     #include "nist5.h"
     #include "sha1.h"
     #include "x15.h"
+    #include "gts.h"
     #include "fresh.h"
     #include "Lyra2RE.h"
     #include "Lyra2.h"
@@ -30,6 +31,7 @@ extern "C" {
     #include "lyra2z330.h"
     #include "lyra2z16m330.h"
     #include "c11.h"
+    #include "lyra2z.h"
 }
 
 #define THROW_ERROR_EXCEPTION(x) NanThrowError(x)
@@ -541,6 +543,29 @@ NAN_METHOD(x15) {
     );
 }
 
+NAN_METHOD(gts) {
+    NanScope();
+
+    if (args.Length() < 1)
+        return THROW_ERROR_EXCEPTION("You must provide one argument.");
+
+    Local<Object> target = args[0]->ToObject();
+
+    if(!Buffer::HasInstance(target))
+        return THROW_ERROR_EXCEPTION("Argument should be a buffer object.");
+
+    char * input = Buffer::Data(target);
+    char output[32];
+
+    uint32_t input_len = Buffer::Length(target);
+
+    gts_hash(input, output, input_len);
+
+    NanReturnValue(
+        NanNewBufferHandle(output, 32)
+    );
+}
+
 NAN_METHOD(fresh) {
     NanScope();
 
@@ -672,7 +697,28 @@ NAN_METHOD(lyra2z330) {
     //Buffer* buff = Buffer::New(output, 32);
     //return scope.Close(buff->handle_);
 }
+NAN_METHOD(lyra2z) {
 
+    if (args.Length() < 2)
+        return THROW_ERROR_EXCEPTION("You must provide two arguments.");
+
+    // Local<Object> target = Nan::To<Object>(info[0]).ToLocalChecked();
+    Local<Object> target = args[0]->ToObject();
+    if(!Buffer::HasInstance(target))
+        return THROW_ERROR_EXCEPTION("Argument should be a buffer object.");
+
+    char * input = Buffer::Data(target);
+    // char *output = (char*) malloc(sizeof(char) * 32);
+    char output[32];
+
+    uint32_t input_len = Buffer::Length(target);
+
+    lyra2z_hash(input, output);
+    NanReturnValue(
+        NanNewBufferHandle(output, 32)
+    );
+    // info.GetReturnValue().Set(Nan::NewBuffer(output, 32).ToLocalChecked());
+}
 NAN_METHOD(lyra2z16m330) {
     NanScope();
 
@@ -764,6 +810,7 @@ void init(Handle<Object> exports) {
     exports->Set(NanNew<String>("nist5"), NanNew<FunctionTemplate>(nist5)->GetFunction());
     exports->Set(NanNew<String>("sha1"), NanNew<FunctionTemplate>(sha1)->GetFunction());
     exports->Set(NanNew<String>("x15"), NanNew<FunctionTemplate>(x15)->GetFunction());
+    exports->Set(NanNew<String>("gts"), NanNew<FunctionTemplate>(gts)->GetFunction());
     exports->Set(NanNew<String>("fresh"), NanNew<FunctionTemplate>(fresh)->GetFunction());
     exports->Set(NanNew<String>("lyra2re"), NanNew<FunctionTemplate>(lyra2re)->GetFunction());
     exports->Set(NanNew<String>("lyra2re2"), NanNew<FunctionTemplate>(lyra2re2)->GetFunction());
@@ -771,6 +818,7 @@ void init(Handle<Object> exports) {
     exports->Set(NanNew<String>("lyra2rev2"), NanNew<FunctionTemplate>(lyra2rev2)->GetFunction());
     exports->Set(NanNew<String>("lyra2z330"), NanNew<FunctionTemplate>(lyra2z330)->GetFunction());
     exports->Set(NanNew<String>("lyra2z16m330"), NanNew<FunctionTemplate>(lyra2z16m330)->GetFunction());
+    exports->Set(NanNew<String>("lyra2z"), NanNew<FunctionTemplate>(lyra2z)->GetFunction());
     exports->Set(NanNew<String>("c11"), NanNew<FunctionTemplate>(c11)->GetFunction());
     exports->Set(NanNew<String>("lyra2h"), NanNew<FunctionTemplate>(lyra2h)->GetFunction());
 }
